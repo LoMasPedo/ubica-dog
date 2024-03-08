@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "353124026676",
+    "project_id": "ubicadog-app-3a84f",
+    "storage_bucket": "ubicadog-app-3a84f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353124026676:android:170e9a554870cf844c3d61",
+        "android_client_info": {
+          "package_name": "com.ubica.ubicadog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkJbZmeDwKBBGgGdUhfRqmd7R3374dwxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

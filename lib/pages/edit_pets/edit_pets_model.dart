@@ -8,38 +8,47 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:ui';
-import 'create_pets_widget.dart' show CreatePetsWidget;
+import 'edit_pets_widget.dart' show EditPetsWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class CreatePetsModel extends FlutterFlowModel<CreatePetsWidget> {
-  ///  State fields for stateful widgets in this component.
+class EditPetsModel extends FlutterFlowModel<EditPetsWidget> {
+  ///  Local state fields for this page.
 
+  bool? create = false;
+
+  bool? ubicationSet = false;
+
+  LatLng? ubicationMaps;
+
+  ///  State fields for stateful widgets in this page.
+
+  final unfocusNode = FocusNode();
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
   String uploadedFileUrl = '';
 
-  // State field(s) for Pet_Name widget.
-  FocusNode? petNameFocusNode;
-  TextEditingController? petNameController;
-  String? Function(BuildContext, String?)? petNameControllerValidator;
+  // State field(s) for nameUpdatePet widget.
+  FocusNode? nameUpdatePetFocusNode;
+  TextEditingController? nameUpdatePetController;
+  String? Function(BuildContext, String?)? nameUpdatePetControllerValidator;
   // State field(s) for Pet_type widget.
   String? petTypeValue;
   FormFieldController<String>? petTypeValueController;
-  // State field(s) for Pet_Description widget.
-  FocusNode? petDescriptionFocusNode1;
-  TextEditingController? petDescriptionController1;
-  String? Function(BuildContext, String?)? petDescriptionController1Validator;
-  // State field(s) for Pet_Description widget.
-  FocusNode? petDescriptionFocusNode2;
-  TextEditingController? petDescriptionController2;
-  String? Function(BuildContext, String?)? petDescriptionController2Validator;
+  // State field(s) for UpdateRace widget.
+  FocusNode? updateRaceFocusNode;
+  TextEditingController? updateRaceController;
+  String? Function(BuildContext, String?)? updateRaceControllerValidator;
+  // State field(s) for UpdateDescription widget.
+  FocusNode? updateDescriptionFocusNode;
+  TextEditingController? updateDescriptionController;
+  String? Function(BuildContext, String?)? updateDescriptionControllerValidator;
   // State field(s) for BorndateText widget.
   FocusNode? borndateTextFocusNode;
   TextEditingController? borndateTextController;
@@ -53,14 +62,15 @@ class CreatePetsModel extends FlutterFlowModel<CreatePetsWidget> {
 
   @override
   void dispose() {
-    petNameFocusNode?.dispose();
-    petNameController?.dispose();
+    unfocusNode.dispose();
+    nameUpdatePetFocusNode?.dispose();
+    nameUpdatePetController?.dispose();
 
-    petDescriptionFocusNode1?.dispose();
-    petDescriptionController1?.dispose();
+    updateRaceFocusNode?.dispose();
+    updateRaceController?.dispose();
 
-    petDescriptionFocusNode2?.dispose();
-    petDescriptionController2?.dispose();
+    updateDescriptionFocusNode?.dispose();
+    updateDescriptionController?.dispose();
 
     borndateTextFocusNode?.dispose();
     borndateTextController?.dispose();

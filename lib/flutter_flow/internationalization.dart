@@ -191,6 +191,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'es': 'Administrar Usuarios',
       'en': '',
     },
+    '7a89if4c': {
+      'es': 'Prueba ubicación',
+      'en': '',
+    },
     '2von566c': {
       'es': 'Switch to Dark Mode',
       'en': '',
@@ -479,6 +483,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'es': 'Confirmar direccion en el mapa',
       'en': '',
     },
+    'm6yxxlaa': {
+      'es': 'Mascotas',
+      'en': '',
+    },
     'gulsdjjp': {
       'es': 'Actualizar',
       'en': '',
@@ -494,6 +502,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // ElegirDireccion
   {
+    '1njq0qsd': {
+      'es': 'Button',
+      'en': '',
+    },
     '5kh2kw37': {
       'es': 'Select Location',
       'en': '',
@@ -546,6 +558,57 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
     'hwut7q63': {
+      'es': 'Home',
+      'en': '',
+    },
+  },
+  // EditPets
+  {
+    '22i53ggx': {
+      'es': 'Actualizar nombre mascota',
+      'en': '',
+    },
+    'qvmz787c': {
+      'es': 'Perro',
+      'en': '',
+    },
+    'nkdvvi7z': {
+      'es': 'Gato',
+      'en': '',
+    },
+    '7irttehz': {
+      'es': 'Otro',
+      'en': '',
+    },
+    '17j6welx': {
+      'es': '',
+      'en': '',
+    },
+    'ofcuw26e': {
+      'es': 'Search for an item...',
+      'en': '',
+    },
+    'u1x90rnf': {
+      'es': 'Raza',
+      'en': '',
+    },
+    'eiwqt413': {
+      'es': 'Descripción',
+      'en': '',
+    },
+    'hdxltzas': {
+      'es': 'Fecha nacimiento',
+      'en': '',
+    },
+    'ffdciz6y': {
+      'es': 'Actualizar',
+      'en': '',
+    },
+    'mg73v350': {
+      'es': 'Actualizar datos mascota',
+      'en': '',
+    },
+    'yjun9abr': {
       'es': 'Home',
       'en': '',
     },
@@ -739,8 +802,12 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'es': 'Descripción de la mascota...',
       'en': '',
     },
-    'yq0krkuq': {
-      'es': 'Fecha nacimiento mascota...',
+    'plbm0r5v': {
+      'es': 'Fecha nacimiento mascota',
+      'en': '',
+    },
+    'gos1zjus': {
+      'es': 'Fecha nacimiento',
       'en': '',
     },
     'e5u7tnc2': {
@@ -760,6 +827,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
     },
     'f71wyjg6': {
       'es': '',
+      'en': '',
+    },
+    'zfbcem4l': {
+      'es': 'Para poder observar las rutas necesitamos tu ubicacion',
       'en': '',
     },
     'rut48ncv': {

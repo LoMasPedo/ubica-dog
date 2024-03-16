@@ -1,66 +1,61 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
-import '/flutter_flow/flutter_flow_google_map.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
-import '/flutter_flow/flutter_flow_place_picker.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/place.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'edit_users_model.dart';
-export 'edit_users_model.dart';
+import 'edit_pets_model.dart';
+export 'edit_pets_model.dart';
 
-class EditUsersWidget extends StatefulWidget {
-  const EditUsersWidget({
+class EditPetsWidget extends StatefulWidget {
+  const EditPetsWidget({
     super.key,
     required this.editParameter,
-    this.referenceUser,
-    this.viajeref,
+    this.referencePets,
   });
 
   final String? editParameter;
-  final DocumentReference? referenceUser;
-  final DocumentReference? viajeref;
+  final DocumentReference? referencePets;
 
   @override
-  State<EditUsersWidget> createState() => _EditUsersWidgetState();
+  State<EditPetsWidget> createState() => _EditPetsWidgetState();
 }
 
-class _EditUsersWidgetState extends State<EditUsersWidget> {
-  late EditUsersModel _model;
+class _EditPetsWidgetState extends State<EditPetsWidget> {
+  late EditPetsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => EditUsersModel());
+    _model = createModel(context, () => EditPetsModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() {
         _model.create = false;
-        _model.ubicationSet = false;
       });
     });
 
-    _model.displayNameUpdateFocusNode ??= FocusNode();
+    _model.nameUpdatePetFocusNode ??= FocusNode();
 
-    _model.emailViewFocusNode ??= FocusNode();
+    _model.updateRaceFocusNode ??= FocusNode();
 
-    _model.uidUpdateFocusNode ??= FocusNode();
+    _model.updateDescriptionFocusNode ??= FocusNode();
 
-    _model.phoneNumberUpdateFocusNode ??= FocusNode();
-
-    _model.addressUpdateFocusNode ??= FocusNode();
+    _model.borndateTextFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -74,15 +69,12 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -103,7 +95,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
           ),
           title: Text(
             FFLocalizations.of(context).getText(
-              'q1uybd9w' /* Actualizar usuarios */,
+              'mg73v350' /* Actualizar datos mascota */,
             ),
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Baloo Da 2',
@@ -159,9 +151,8 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        StreamBuilder<UsersRecord>(
-                          stream:
-                              UsersRecord.getDocument(widget.referenceUser!),
+                        StreamBuilder<PetsRecord>(
+                          stream: PetsRecord.getDocument(widget.referencePets!),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
                             if (!snapshot.hasData) {
@@ -177,7 +168,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                 ),
                               );
                             }
-                            final actualizarUsersRecord = snapshot.data!;
+                            final actualizarPetsRecord = snapshot.data!;
                             return Container(
                               width: double.infinity,
                               constraints: BoxConstraints(
@@ -318,8 +309,8 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                                               }
                                                                             }
 
-                                                                            await actualizarUsersRecord.reference.update(createUsersRecordData(
-                                                                              photoUrl: _model.uploadedFileUrl,
+                                                                            await actualizarPetsRecord.reference.update(createPetsRecordData(
+                                                                              photo: _model.uploadedFileUrl,
                                                                             ));
                                                                           },
                                                                           child:
@@ -336,7 +327,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                                             ),
                                                                             child:
                                                                                 Image.network(
-                                                                              actualizarUsersRecord.photoUrl,
+                                                                              actualizarPetsRecord.photo,
                                                                               fit: BoxFit.cover,
                                                                             ),
                                                                           ),
@@ -364,20 +355,20 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                               width: double.infinity,
                                               child: TextFormField(
                                                 controller: _model
-                                                        .displayNameUpdateController ??=
+                                                        .nameUpdatePetController ??=
                                                     TextEditingController(
-                                                  text: actualizarUsersRecord
-                                                      .displayName,
+                                                  text:
+                                                      actualizarPetsRecord.name,
                                                 ),
                                                 focusNode: _model
-                                                    .displayNameUpdateFocusNode,
+                                                    .nameUpdatePetFocusNode,
                                                 autofocus: true,
                                                 obscureText: false,
                                                 decoration: InputDecoration(
                                                   labelText: FFLocalizations.of(
                                                           context)
                                                       .getText(
-                                                    'm2f5eow1' /* Actualizar nombre completo */,
+                                                    '22i53ggx' /* Actualizar nombre mascota */,
                                                   ),
                                                   labelStyle:
                                                       FlutterFlowTheme.of(
@@ -444,9 +435,75 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium,
                                                 validator: _model
-                                                    .displayNameUpdateControllerValidator
+                                                    .nameUpdatePetControllerValidator
                                                     .asValidator(context),
                                               ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    20.0, 0.0, 20.0, 16.0),
+                                            child: FlutterFlowDropDown<String>(
+                                              controller: _model
+                                                      .petTypeValueController ??=
+                                                  FormFieldController<String>(
+                                                _model.petTypeValue ??=
+                                                    actualizarPetsRecord
+                                                        .typePet,
+                                              ),
+                                              options: List<String>.from(
+                                                  ['Perro', 'Gato', 'Otro']),
+                                              optionLabels: [
+                                                FFLocalizations.of(context)
+                                                    .getText(
+                                                  'qvmz787c' /* Perro */,
+                                                ),
+                                                FFLocalizations.of(context)
+                                                    .getText(
+                                                  'nkdvvi7z' /* Gato */,
+                                                ),
+                                                FFLocalizations.of(context)
+                                                    .getText(
+                                                  '7irttehz' /* Otro */,
+                                                )
+                                              ],
+                                              onChanged: (val) => setState(() =>
+                                                  _model.petTypeValue = val),
+                                              width: double.infinity,
+                                              height: 50.0,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 12.0,
+                                                      ),
+                                              icon: Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                size: 24.0,
+                                              ),
+                                              fillColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                              elevation: 2.0,
+                                              borderColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              borderWidth: 2.0,
+                                              borderRadius: 40.0,
+                                              margin: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 4.0, 16.0, 4.0),
+                                              hidesUnderline: true,
+                                              isOverButton: true,
+                                              isSearchable: false,
+                                              isMultiSelect: false,
                                             ),
                                           ),
                                           Padding(
@@ -457,13 +514,13 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                               width: double.infinity,
                                               child: TextFormField(
                                                 controller: _model
-                                                        .emailViewController ??=
+                                                        .updateRaceController ??=
                                                     TextEditingController(
-                                                  text: actualizarUsersRecord
-                                                      .email,
+                                                  text:
+                                                      actualizarPetsRecord.race,
                                                 ),
                                                 focusNode:
-                                                    _model.emailViewFocusNode,
+                                                    _model.updateRaceFocusNode,
                                                 autofocus: true,
                                                 autofillHints: [
                                                   AutofillHints.email
@@ -473,7 +530,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                   labelText: FFLocalizations.of(
                                                           context)
                                                       .getText(
-                                                    'tx3dioqf' /* Correo electrónico */,
+                                                    'u1x90rnf' /* Raza */,
                                                   ),
                                                   labelStyle:
                                                       FlutterFlowTheme.of(
@@ -542,7 +599,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                 keyboardType:
                                                     TextInputType.emailAddress,
                                                 validator: _model
-                                                    .emailViewControllerValidator
+                                                    .updateRaceControllerValidator
                                                     .asValidator(context),
                                               ),
                                             ),
@@ -555,116 +612,23 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                               width: double.infinity,
                                               child: TextFormField(
                                                 controller: _model
-                                                        .uidUpdateController ??=
+                                                        .updateDescriptionController ??=
                                                     TextEditingController(
-                                                  text:
-                                                      actualizarUsersRecord.uid,
-                                                ),
-                                                focusNode:
-                                                    _model.uidUpdateFocusNode,
-                                                autofocus: true,
-                                                obscureText: false,
-                                                decoration: InputDecoration(
-                                                  labelText: FFLocalizations.of(
-                                                          context)
-                                                      .getText(
-                                                    'unamj4ly' /* Actualizar número de documento */,
-                                                  ),
-                                                  labelStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodySmall,
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: Color(0xFF3B9620),
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .alternate,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                  focusedErrorBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .alternate,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                  filled: true,
-                                                  fillColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  contentPadding:
-                                                      EdgeInsets.all(24.0),
-                                                ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium,
-                                                validator: _model
-                                                    .uidUpdateControllerValidator
-                                                    .asValidator(context),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 0.0, 20.0, 16.0),
-                                            child: Container(
-                                              width: double.infinity,
-                                              child: TextFormField(
-                                                controller: _model
-                                                        .phoneNumberUpdateController ??=
-                                                    TextEditingController(
-                                                  text: actualizarUsersRecord
-                                                      .phoneNumber,
+                                                  text: actualizarPetsRecord
+                                                      .description,
                                                 ),
                                                 focusNode: _model
-                                                    .phoneNumberUpdateFocusNode,
+                                                    .updateDescriptionFocusNode,
                                                 autofocus: true,
                                                 autofillHints: [
-                                                  AutofillHints.telephoneNumber
+                                                  AutofillHints.email
                                                 ],
                                                 obscureText: false,
                                                 decoration: InputDecoration(
                                                   labelText: FFLocalizations.of(
                                                           context)
                                                       .getText(
-                                                    '52lh6wzv' /* Actualizar número de celular */,
+                                                    'eiwqt413' /* Descripción */,
                                                   ),
                                                   labelStyle:
                                                       FlutterFlowTheme.of(
@@ -731,49 +695,45 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium,
                                                 keyboardType:
-                                                    TextInputType.phone,
+                                                    TextInputType.emailAddress,
                                                 validator: _model
-                                                    .phoneNumberUpdateControllerValidator
+                                                    .updateDescriptionControllerValidator
                                                     .asValidator(context),
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 0.0, 20.0, 16.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Expanded(
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          20.0, 0.0, 20.0, 8.0),
                                                   child: Container(
                                                     width: double.infinity,
                                                     child: TextFormField(
                                                       controller: _model
-                                                              .addressUpdateController ??=
+                                                              .borndateTextController ??=
                                                           TextEditingController(
                                                         text:
-                                                            actualizarUsersRecord
-                                                                .addressHome,
+                                                            actualizarPetsRecord
+                                                                .birthdate
+                                                                ?.toString(),
                                                       ),
                                                       focusNode: _model
-                                                          .addressUpdateFocusNode,
+                                                          .borndateTextFocusNode,
                                                       autofocus: true,
                                                       autofillHints: [
-                                                        AutofillHints.email
+                                                        AutofillHints.birthday
                                                       ],
-                                                      textCapitalization:
-                                                          TextCapitalization
-                                                              .none,
                                                       readOnly: true,
                                                       obscureText: false,
                                                       decoration:
                                                           InputDecoration(
                                                         labelText: _model
-                                                            .placePickerValue
-                                                            .address,
+                                                            .datePicked
+                                                            ?.toString(),
                                                         labelStyle:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -782,7 +742,7 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                             FFLocalizations.of(
                                                                     context)
                                                                 .getText(
-                                                          '5zeme3gm' /* Actualizar direccion */,
+                                                          'hdxltzas' /* Fecha nacimiento */,
                                                         ),
                                                         enabledBorder:
                                                             OutlineInputBorder(
@@ -852,322 +812,186 @@ class _EditUsersWidgetState extends State<EditUsersWidget> {
                                                                   context)
                                                               .bodyMedium,
                                                       keyboardType:
-                                                          TextInputType.name,
+                                                          TextInputType
+                                                              .emailAddress,
                                                       validator: _model
-                                                          .addressUpdateControllerValidator
+                                                          .borndateTextControllerValidator
                                                           .asValidator(context),
                                                     ),
                                                   ),
                                                 ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0.0, 0.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(20.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child:
-                                                        FlutterFlowPlacePicker(
-                                                      iOSGoogleMapsApiKey:
-                                                          'AIzaSyB-gJR4XQWsbvkkVp_TYC8wNUU0J75TSTY',
-                                                      androidGoogleMapsApiKey:
-                                                          'AIzaSyCkJbZmeDwKBBGgGdUhfRqmd7R3374dwxI',
-                                                      webGoogleMapsApiKey:
-                                                          'AIzaSyDXsqP1YUfNRRJ81AOxRoq-ASII0Pu_N1Q',
-                                                      onSelect: (place) async {
-                                                        setState(() => _model
-                                                                .placePickerValue =
-                                                            place);
-                                                      },
-                                                      defaultText:
-                                                          FFLocalizations.of(
-                                                                  context)
-                                                              .getText(
-                                                        'tb4018y6' /*  */,
-                                                      ),
-                                                      icon: Icon(
-                                                        Icons.place,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        size: 15.0,
-                                                      ),
-                                                      buttonOptions:
-                                                          FFButtonOptions(
-                                                        height: 50.0,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary,
-                                                        textStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium,
-                                                        elevation: 2.0,
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .transparent,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(24.0),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          if (_model.placePickerValue != null)
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 0.0, 16.0),
-                                              child: FFButtonWidget(
-                                                onPressed: () async {
-                                                  if (_model.placePickerValue !=
-                                                      null) {
-                                                    await widget.referenceUser!
-                                                        .update(
-                                                            createUsersRecordData(
-                                                      addressHome: _model
-                                                          .placePickerValue
-                                                          .address,
-                                                    ));
-                                                    setState(() {
-                                                      FFAppState().InicioViaje =
-                                                          _model
-                                                              .placePickerValue
-                                                              .latLng;
-                                                    });
-                                                    setState(() {
-                                                      _model.ubicationSet =
-                                                          true;
-                                                      _model.ubicationMaps =
-                                                          _model
-                                                              .placePickerValue
-                                                              .latLng;
-                                                    });
-                                                  } else {
-                                                    FFAppState().update(() {
-                                                      FFAppState().InicioViaje =
-                                                          actualizarUsersRecord
-                                                              .ubication;
-                                                    });
-                                                    setState(() {
-                                                      _model.ubicationSet =
-                                                          true;
-                                                      _model.ubicationMaps =
-                                                          actualizarUsersRecord
-                                                              .ubication;
-                                                    });
-                                                  }
-                                                },
-                                                text:
-                                                    FFLocalizations.of(context)
-                                                        .getText(
-                                                  'e1jmw6hz' /* Confirmar direccion en el mapa */,
-                                                ),
-                                                options: FFButtonOptions(
-                                                  height: 40.0,
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 24.0, 0.0),
-                                                  iconPadding:
-                                                      EdgeInsetsDirectional
-                                                          .fromSTEB(0.0, 0.0,
-                                                              0.0, 0.0),
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primary,
-                                                  textStyle:
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 16.0, 8.0),
+                                                child: FlutterFlowIconButton(
+                                                  borderColor:
                                                       FlutterFlowTheme.of(
                                                               context)
-                                                          .titleSmall
-                                                          .override(
-                                                            fontFamily:
-                                                                'Montserrat',
-                                                            color: Colors.white,
-                                                          ),
-                                                  elevation: 3.0,
-                                                  borderSide: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 1.0,
+                                                          .primary,
+                                                  borderRadius: 20.0,
+                                                  borderWidth: 1.0,
+                                                  buttonSize: 40.0,
+                                                  fillColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .accent1,
+                                                  icon: Icon(
+                                                    Icons.calendar_month,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    size: 24.0,
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
+                                                  onPressed: () async {
+                                                    if (kIsWeb) {
+                                                      final _datePickedDate =
+                                                          await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            getCurrentTimestamp,
+                                                        firstDate:
+                                                            DateTime(1900),
+                                                        lastDate:
+                                                            getCurrentTimestamp,
+                                                        builder:
+                                                            (context, child) {
+                                                          return wrapInMaterialDatePickerTheme(
+                                                            context,
+                                                            child!,
+                                                            headerBackgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                            headerForegroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .info,
+                                                            headerTextStyle:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .headlineLarge
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Baloo Da 2',
+                                                                      fontSize:
+                                                                          32.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                            pickerBackgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryBackground,
+                                                            pickerForegroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                            selectedDateTimeBackgroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primary,
+                                                            selectedDateTimeForegroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .info,
+                                                            actionButtonForegroundColor:
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                            iconSize: 24.0,
+                                                          );
+                                                        },
+                                                      );
+
+                                                      if (_datePickedDate !=
+                                                          null) {
+                                                        safeSetState(() {
+                                                          _model.datePicked =
+                                                              DateTime(
+                                                            _datePickedDate
+                                                                .year,
+                                                            _datePickedDate
+                                                                .month,
+                                                            _datePickedDate.day,
+                                                          );
+                                                        });
+                                                      }
+                                                    } else {
+                                                      await DatePicker
+                                                          .showDatePicker(
+                                                        context,
+                                                        showTitleActions: true,
+                                                        onConfirm: (date) {
+                                                          safeSetState(() {
+                                                            _model.datePicked =
+                                                                date;
+                                                          });
+                                                        },
+                                                        currentTime:
+                                                            getCurrentTimestamp,
+                                                        minTime:
+                                                            DateTime(0, 0, 0),
+                                                        maxTime:
+                                                            getCurrentTimestamp,
+                                                        locale: LocaleType
+                                                            .values
+                                                            .firstWhere(
+                                                          (l) =>
+                                                              l.name ==
+                                                              FFLocalizations.of(
+                                                                      context)
+                                                                  .languageCode,
+                                                          orElse: () =>
+                                                              LocaleType.en,
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
                                                 ),
                                               ),
-                                            ),
-                                          if (_model.ubicationSet == true)
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 0.0, 0.0, 16.0),
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                    height: 468.0,
-                                                    decoration: BoxDecoration(),
-                                                    child: Builder(
-                                                        builder: (context) {
-                                                      final _googleMapMarker =
-                                                          FFAppState()
-                                                              .InicioViaje;
-                                                      return FlutterFlowGoogleMap(
-                                                        controller: _model
-                                                            .googleMapsController,
-                                                        onCameraIdle: (latLng) =>
-                                                            _model.googleMapsCenter =
-                                                                latLng,
-                                                        initialLocation: _model
-                                                                .googleMapsCenter ??=
-                                                            FFAppState()
-                                                                .InicioViaje!,
-                                                        markers: [
-                                                          if (_googleMapMarker !=
-                                                              null)
-                                                            FlutterFlowMarker(
-                                                              _googleMapMarker
-                                                                  .serialize(),
-                                                              _googleMapMarker,
-                                                            ),
-                                                        ],
-                                                        markerColor:
-                                                            GoogleMarkerColor
-                                                                .red,
-                                                        mapType: MapType.normal,
-                                                        style: GoogleMapStyle
-                                                            .standard,
-                                                        initialZoom: 14.0,
-                                                        allowInteraction: true,
-                                                        allowZoom: true,
-                                                        showZoomControls: true,
-                                                        showLocation: false,
-                                                        showCompass: true,
-                                                        showMapToolbar: false,
-                                                        showTraffic: false,
-                                                        centerMapOnMarkerTap:
-                                                            true,
-                                                      );
-                                                    }),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            ],
+                                          ),
                                           Row(
                                             mainAxisSize: MainAxisSize.max,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              if (actualizarUsersRecord.roles ==
-                                                  'Cliente')
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 8.0, 16.0),
-                                                  child: FFButtonWidget(
-                                                    onPressed: () async {
-                                                      context.pushNamed(
-                                                        'SearchPets',
-                                                        queryParameters: {
-                                                          'referenceCleinte':
-                                                              serializeParam(
-                                                            actualizarUsersRecord
-                                                                .reference,
-                                                            ParamType
-                                                                .DocumentReference,
-                                                          ),
-                                                        }.withoutNulls,
-                                                      );
-                                                    },
-                                                    text: FFLocalizations.of(
-                                                            context)
-                                                        .getText(
-                                                      'm6yxxlaa' /* Mascotas */,
-                                                    ),
-                                                    icon: Icon(
-                                                      Icons.pets_rounded,
-                                                      size: 15.0,
-                                                    ),
-                                                    options: FFButtonOptions(
-                                                      height: 40.0,
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  24.0,
-                                                                  0.0,
-                                                                  24.0,
-                                                                  0.0),
-                                                      iconPadding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                      textStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleSmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Montserrat',
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                      elevation: 3.0,
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 1.0,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                    ),
-                                                  ),
-                                                ),
                                               Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(
                                                         8.0, 0.0, 0.0, 16.0),
                                                 child: FFButtonWidget(
                                                   onPressed: () async {
-                                                    await actualizarUsersRecord
+                                                    await actualizarPetsRecord
                                                         .reference
                                                         .update(
-                                                            createUsersRecordData(
-                                                      uid: _model
-                                                          .uidUpdateController
+                                                            createPetsRecordData(
+                                                      name: _model
+                                                          .nameUpdatePetController
                                                           .text,
-                                                      displayName: _model
-                                                          .displayNameUpdateController
+                                                      description: _model
+                                                          .updateDescriptionController
                                                           .text,
-                                                      phoneNumber: _model
-                                                          .phoneNumberUpdateController
+                                                      typePet:
+                                                          _model.petTypeValue,
+                                                      race: _model
+                                                          .updateRaceController
                                                           .text,
-                                                      photoUrl:
-                                                          actualizarUsersRecord
-                                                              .photoUrl,
-                                                      ubication:
-                                                          _model.ubicationMaps,
+                                                      birthdate:
+                                                          _model.datePicked,
+                                                      photo:
+                                                          actualizarPetsRecord
+                                                              .photo,
                                                     ));
                                                     context.safePop();
                                                   },
                                                   text: FFLocalizations.of(
                                                           context)
                                                       .getText(
-                                                    'gulsdjjp' /* Actualizar */,
+                                                    'ffdciz6y' /* Actualizar */,
                                                   ),
                                                   options: FFButtonOptions(
                                                     height: 40.0,

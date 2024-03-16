@@ -72,6 +72,11 @@ class UsersRecord extends FirestoreRecord {
   DocumentReference? get ride => _ride;
   bool hasRide() => _ride != null;
 
+  // "rides" field.
+  List<DocumentReference>? _rides;
+  List<DocumentReference> get rides => _rides ?? const [];
+  bool hasRides() => _rides != null;
+
   void _initializeFields() {
     _uid = snapshotData['uid'] as String?;
     _email = snapshotData['email'] as String?;
@@ -84,6 +89,7 @@ class UsersRecord extends FirestoreRecord {
     _roles = snapshotData['roles'] as String?;
     _ubication = snapshotData['ubication'] as LatLng?;
     _ride = snapshotData['ride'] as DocumentReference?;
+    _rides = getDataList(snapshotData['rides']);
   }
 
   static CollectionReference get collection =>
@@ -165,7 +171,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         listEquality.equals(e1?.pets, e2?.pets) &&
         e1?.roles == e2?.roles &&
         e1?.ubication == e2?.ubication &&
-        e1?.ride == e2?.ride;
+        e1?.ride == e2?.ride &&
+        listEquality.equals(e1?.rides, e2?.rides);
   }
 
   @override
@@ -180,7 +187,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.pets,
         e?.roles,
         e?.ubication,
-        e?.ride
+        e?.ride,
+        e?.rides
       ]);
 
   @override

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "353124026676",
+    "firebase_url": "https://ubicadog-app-3a84f-default-rtdb.firebaseio.com",
     "project_id": "ubicadog-app-3a84f",
     "storage_bucket": "ubicadog-app-3a84f.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.ubica.ubicadog"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "353124026676-038kk7gav416utb8ht65do2rf4v2ke4p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ubica.ubicadog",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "353124026676-usfft8vn6rq0f4pju3e75hc8o6otqdge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCkJbZmeDwKBBGgGdUhfRqmd7R3374dwxI"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353124026676-usfft8vn6rq0f4pju3e75hc8o6otqdge.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "353124026676-mpsolknfeh86bpb2ojbt5540qgq4ib7l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ubica.ubicadog"
+              }
+            }
+          ]
         }
       }
     }

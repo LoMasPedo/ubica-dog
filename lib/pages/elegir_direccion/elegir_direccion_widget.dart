@@ -32,12 +32,15 @@ class _ElegirDireccionWidgetState extends State<ElegirDireccionWidget> {
   late ElegirDireccionModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  LatLng? currentUserLocationValue;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ElegirDireccionModel());
 
+    getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
+        .then((loc) => setState(() => currentUserLocationValue = loc));
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -51,6 +54,22 @@ class _ElegirDireccionWidgetState extends State<ElegirDireccionWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
+    if (currentUserLocationValue == null) {
+      return Container(
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        child: Center(
+          child: SizedBox(
+            width: 50.0,
+            height: 50.0,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                FlutterFlowTheme.of(context).primary,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -78,19 +97,58 @@ class _ElegirDireccionWidgetState extends State<ElegirDireccionWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  FFButtonWidget(
+                    onPressed: () async {
+                      currentUserLocationValue = await getCurrentUserLocation(
+                          defaultLocation: LatLng(0.0, 0.0));
+                      setState(() {
+                        FFAppState().Prueba = currentUserLocationValue;
+                      });
+                      setState(() {
+                        _model.pageState = true;
+                      });
+                    },
+                    text: FFLocalizations.of(context).getText(
+                      '1njq0qsd' /* Button */,
+                    ),
+                    options: FFButtonOptions(
+                      height: 40.0,
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                      iconPadding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).primary,
+                      textStyle:
+                          FlutterFlowTheme.of(context).titleSmall.override(
+                                fontFamily: 'Montserrat',
+                                color: Colors.white,
+                              ),
+                      elevation: 3.0,
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ],
+              ),
               Stack(
                 children: [
                   Container(
                     height: 649.0,
                     decoration: BoxDecoration(),
                     child: Builder(builder: (context) {
-                      final _googleMapMarker = FFAppState().InicioViaje;
+                      final _googleMapMarker = currentUserLocationValue;
                       return FlutterFlowGoogleMap(
                         controller: _model.googleMapsController,
                         onCameraIdle: (latLng) =>
                             setState(() => _model.googleMapsCenter = latLng),
                         initialLocation: _model.googleMapsCenter ??=
-                            FFAppState().InicioViaje!,
+                            currentUserLocationValue!,
                         markers: [
                           if (_googleMapMarker != null)
                             FlutterFlowMarker(
@@ -101,7 +159,7 @@ class _ElegirDireccionWidgetState extends State<ElegirDireccionWidget> {
                         markerColor: GoogleMarkerColor.red,
                         mapType: MapType.normal,
                         style: GoogleMapStyle.standard,
-                        initialZoom: 1.0,
+                        initialZoom: 14.0,
                         allowInteraction: true,
                         allowZoom: true,
                         showZoomControls: true,

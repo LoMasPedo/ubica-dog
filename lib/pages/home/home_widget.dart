@@ -111,41 +111,51 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
             body: SafeArea(
               top: true,
-              child: Stack(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Container(
-                            width: MediaQuery.sizeOf(context).width * 0.9,
-                            height: MediaQuery.sizeOf(context).height * 0.9,
-                            child: custom_widgets.RouteViewLive(
-                              width: MediaQuery.sizeOf(context).width * 0.9,
-                              height: MediaQuery.sizeOf(context).height * 0.9,
-                              lineColor: FlutterFlowTheme.of(context).accent1,
-                              iOSGoogleMapsApiKey:
-                                  'AIzaSyB-gJR4XQWsbvkkVp_TYC8wNUU0J75TSTY',
-                              androidGoogleMapsApiKey:
-                                  'AIzaSyCkJbZmeDwKBBGgGdUhfRqmd7R3374dwxI',
-                              webGoogleMapsApiKey:
-                                  'AIzaSyDXsqP1YUfNRRJ81AOxRoq-ASII0Pu_N1Q',
-                              startAddress:
-                                  homeRideRecord.userLocation?.toString(),
-                              destinationAddress: homeRideRecord
-                                  .destinationLocation
-                                  ?.toString(),
-                              rideDetailsReference: homeRideRecord.reference,
-                              startCoordinate: homeRideRecord.userLocation!,
-                              endCoordinate: homeRideRecord.driverLocation!,
+                  Stack(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 1.0,
+                              height: MediaQuery.sizeOf(context).height * 1.0,
+                              child: custom_widgets.RouteViewLive(
+                                width: MediaQuery.sizeOf(context).width * 1.0,
+                                height: MediaQuery.sizeOf(context).height * 1.0,
+                                lineColor: FlutterFlowTheme.of(context).accent1,
+                                iOSGoogleMapsApiKey:
+                                    'AIzaSyB-gJR4XQWsbvkkVp_TYC8wNUU0J75TSTY',
+                                androidGoogleMapsApiKey:
+                                    'AIzaSyCkJbZmeDwKBBGgGdUhfRqmd7R3374dwxI',
+                                webGoogleMapsApiKey:
+                                    'AIzaSyDXsqP1YUfNRRJ81AOxRoq-ASII0Pu_N1Q',
+                                startAddress:
+                                    homeRideRecord.userLocation?.toString(),
+                                destinationAddress: homeRideRecord
+                                    .destinationLocation
+                                    ?.toString(),
+                                rideDetailsReference: homeRideRecord.reference,
+                                startCoordinate: homeRideRecord.userLocation!,
+                                endCoordinate: homeRideRecord.driverLocation!,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [],
+                      ),
+                    ],
                   ),
                 ],
               ),

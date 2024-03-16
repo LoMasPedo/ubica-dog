@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>353124026676-mpsolknfeh86bpb2ojbt5540qgq4ib7l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.353124026676-mpsolknfeh86bpb2ojbt5540qgq4ib7l</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>353124026676-038kk7gav416utb8ht65do2rf4v2ke4p.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB-gJR4XQWsbvkkVp_TYC8wNUU0J75TSTY</string>
 	<key>GCM_SENDER_ID</key>
@@ -26,5 +32,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:353124026676:ios:2246e9dd557f08bf4c3d61</string>
+	<key>DATABASE_URL</key>
+	<string>https://ubicadog-app-3a84f-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

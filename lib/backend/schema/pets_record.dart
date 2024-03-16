@@ -32,11 +32,6 @@ class PetsRecord extends FirestoreRecord {
   String get typePet => _typePet ?? '';
   bool hasTypePet() => _typePet != null;
 
-  // "birthdate" field.
-  int? _birthdate;
-  int get birthdate => _birthdate ?? 0;
-  bool hasBirthdate() => _birthdate != null;
-
   // "admission" field.
   DateTime? _admission;
   DateTime? get admission => _admission;
@@ -62,16 +57,21 @@ class PetsRecord extends FirestoreRecord {
   String get owner => _owner ?? '';
   bool hasOwner() => _owner != null;
 
+  // "birthdate" field.
+  DateTime? _birthdate;
+  DateTime? get birthdate => _birthdate;
+  bool hasBirthdate() => _birthdate != null;
+
   void _initializeFields() {
     _name = snapshotData['name'] as String?;
     _description = snapshotData['description'] as String?;
     _typePet = snapshotData['type_pet'] as String?;
-    _birthdate = castToType<int>(snapshotData['birthdate']);
     _admission = snapshotData['admission'] as DateTime?;
     _race = snapshotData['race'] as String?;
     _photo = snapshotData['photo'] as String?;
     _uid = snapshotData['uid'] as String?;
     _owner = snapshotData['owner'] as String?;
+    _birthdate = snapshotData['birthdate'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -111,24 +111,24 @@ Map<String, dynamic> createPetsRecordData({
   String? name,
   String? description,
   String? typePet,
-  int? birthdate,
   DateTime? admission,
   String? race,
   String? photo,
   String? uid,
   String? owner,
+  DateTime? birthdate,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'name': name,
       'description': description,
       'type_pet': typePet,
-      'birthdate': birthdate,
       'admission': admission,
       'race': race,
       'photo': photo,
       'uid': uid,
       'owner': owner,
+      'birthdate': birthdate,
     }.withoutNulls,
   );
 
@@ -143,12 +143,12 @@ class PetsRecordDocumentEquality implements Equality<PetsRecord> {
     return e1?.name == e2?.name &&
         e1?.description == e2?.description &&
         e1?.typePet == e2?.typePet &&
-        e1?.birthdate == e2?.birthdate &&
         e1?.admission == e2?.admission &&
         e1?.race == e2?.race &&
         e1?.photo == e2?.photo &&
         e1?.uid == e2?.uid &&
-        e1?.owner == e2?.owner;
+        e1?.owner == e2?.owner &&
+        e1?.birthdate == e2?.birthdate;
   }
 
   @override
@@ -156,12 +156,12 @@ class PetsRecordDocumentEquality implements Equality<PetsRecord> {
         e?.name,
         e?.description,
         e?.typePet,
-        e?.birthdate,
         e?.admission,
         e?.race,
         e?.photo,
         e?.uid,
-        e?.owner
+        e?.owner,
+        e?.birthdate
       ]);
 
   @override

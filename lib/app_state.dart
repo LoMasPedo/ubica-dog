@@ -41,4 +41,10 @@ class FFAppState extends ChangeNotifier {
   set routeDuration(String _value) {
     _routeDuration = _value;
   }
+
+  LatLng? _Prueba;
+  LatLng? get Prueba => _Prueba;
+  set Prueba(LatLng? _value) {
+    _Prueba = _value;
+  }
 }

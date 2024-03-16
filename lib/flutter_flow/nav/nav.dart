@@ -217,6 +217,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             viajeref: params.getParam(
                 'viajeref', ParamType.DocumentReference, false, ['ride']),
           ),
+        ),
+        FFRoute(
+          name: 'EditPets',
+          path: '/editPets',
+          builder: (context, params) => EditPetsWidget(
+            editParameter: params.getParam('editParameter', ParamType.String),
+            referencePets: params.getParam(
+                'referencePets', ParamType.DocumentReference, false, ['pets']),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

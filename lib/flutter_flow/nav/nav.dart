@@ -226,6 +226,22 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             referencePets: params.getParam(
                 'referencePets', ParamType.DocumentReference, false, ['pets']),
           ),
+        ),
+        FFRoute(
+          name: 'EditRutes',
+          path: '/editRutes',
+          builder: (context, params) => EditRutesWidget(),
+        ),
+        FFRoute(
+          name: 'SearchRutes',
+          path: '/searchRutes',
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: SearchRutesWidget(
+              referenciaConductor: params.getParam('referenciaConductor',
+                  ParamType.DocumentReference, false, ['Users']),
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -164,10 +164,13 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
                                   child: Image.asset(
-                                    'assets/images/Logo.png',
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? 'assets/images/LogoAmarillo.png'
+                                        : 'assets/images/LogoAzul.png',
                                     width: 157.0,
-                                    height: 116.0,
-                                    fit: BoxFit.cover,
+                                    height: 156.0,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ),

@@ -7,7 +7,6 @@ import 'schema/util/firestore_util.dart';
 
 import 'schema/pets_record.dart';
 import 'schema/users_record.dart';
-import 'schema/routes_record.dart';
 import 'schema/ride_record.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -18,7 +17,6 @@ export 'schema/util/schema_util.dart';
 
 export 'schema/pets_record.dart';
 export 'schema/users_record.dart';
-export 'schema/routes_record.dart';
 export 'schema/ride_record.dart';
 
 /// Functions to query PetsRecords (as a Stream and as a Future).
@@ -90,43 +88,6 @@ Future<List<UsersRecord>> queryUsersRecordOnce({
     queryCollectionOnce(
       UsersRecord.collection,
       UsersRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-/// Functions to query RoutesRecords (as a Stream and as a Future).
-Future<int> queryRoutesRecordCount({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) =>
-    queryCollectionCount(
-      RoutesRecord.collection,
-      queryBuilder: queryBuilder,
-      limit: limit,
-    );
-
-Stream<List<RoutesRecord>> queryRoutesRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      RoutesRecord.collection,
-      RoutesRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<RoutesRecord>> queryRoutesRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      RoutesRecord.collection,
-      RoutesRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

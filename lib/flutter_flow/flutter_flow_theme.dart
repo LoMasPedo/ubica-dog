@@ -54,6 +54,12 @@ abstract class FlutterFlowTheme {
   late Color error;
   late Color info;
 
+  late Color safetyOrange;
+  late Color selectiveYellow;
+  late Color robinEggBlue;
+  late Color emerald;
+  late Color buff;
+
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
   @Deprecated('Use displaySmall instead')
@@ -125,10 +131,10 @@ class LightModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFFFF9E00);
+  late Color primary = const Color(0xFF00BDC5);
   late Color secondary = const Color(0xFF00A8FF);
   late Color tertiary = const Color(0xFF00CC79);
-  late Color alternate = const Color(0xFFFFC700);
+  late Color alternate = const Color(0xFF5CCA80);
   late Color primaryText = const Color(0xFF333333);
   late Color secondaryText = const Color(0xFF666666);
   late Color primaryBackground = const Color(0xFFFFFFFF);
@@ -141,6 +147,12 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color warning = const Color(0xFFFFC700);
   late Color error = const Color(0xFFFF2E63);
   late Color info = const Color(0xFF00A8FF);
+
+  late Color safetyOrange = Color(0xFFFF7B00);
+  late Color selectiveYellow = Color(0xFFFDB622);
+  late Color robinEggBlue = Color(0xFF00BDC5);
+  late Color emerald = Color(0xFF5CCA80);
+  late Color buff = Color(0xFFDEA992);
 }
 
 abstract class Typography {
@@ -295,10 +307,10 @@ class DarkModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF3B9620);
+  late Color primary = const Color(0xFFFDB622);
   late Color secondary = const Color(0xFF0084D1);
   late Color tertiary = const Color(0xFF00B364);
-  late Color alternate = const Color(0xFFFFA500);
+  late Color alternate = const Color(0xFFFF7B00);
   late Color primaryText = const Color(0xFFCCCCCC);
   late Color secondaryText = const Color(0xFF999999);
   late Color primaryBackground = const Color(0xFF121212);
@@ -311,6 +323,12 @@ class DarkModeTheme extends FlutterFlowTheme {
   late Color warning = const Color(0xFFFFA500);
   late Color error = const Color(0xFFD41E54);
   late Color info = const Color(0xFF0084D1);
+
+  late Color safetyOrange = Color(0xFFFF7B00);
+  late Color selectiveYellow = Color(0xFFFDB622);
+  late Color robinEggBlue = Color(0xFF00BDC5);
+  late Color emerald = Color(0xFF5CCA80);
+  late Color buff = Color(0xFFDEA992);
 }
 
 extension TextStyleHelper on TextStyle {

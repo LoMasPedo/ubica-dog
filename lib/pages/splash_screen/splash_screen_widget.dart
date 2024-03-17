@@ -111,8 +111,11 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
+            alignment: AlignmentDirectional(0.0, -1.0),
             image: Image.asset(
-              'assets/images/BgLoginMobile.png',
+              Theme.of(context).brightness == Brightness.dark
+                  ? 'assets/images/FondoNoche.jpg'
+                  : 'assets/images/FondoDia.jpg',
             ).image,
           ),
         ),
@@ -130,9 +133,11 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/Logo.png',
+                      Theme.of(context).brightness == Brightness.dark
+                          ? 'assets/images/LogoAmarillo.png'
+                          : 'assets/images/LogoAzul.png',
                       width: 335.0,
-                      height: 234.0,
+                      height: 355.0,
                       fit: BoxFit.fitHeight,
                     ).animateOnPageLoad(
                         animationsMap['imageOnPageLoadAnimation']!),

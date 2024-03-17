@@ -1,38 +1,44 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/create_task_new/create_task_new_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:text_search/text_search.dart';
-import 'rutas_model.dart';
-export 'rutas_model.dart';
+import 'search_rutes_model.dart';
+export 'search_rutes_model.dart';
 
-class RutasWidget extends StatefulWidget {
-  const RutasWidget({super.key});
+class SearchRutesWidget extends StatefulWidget {
+  const SearchRutesWidget({
+    super.key,
+    required this.referenciaConductor,
+  });
+
+  final DocumentReference? referenciaConductor;
 
   @override
-  State<RutasWidget> createState() => _RutasWidgetState();
+  State<SearchRutesWidget> createState() => _SearchRutesWidgetState();
 }
 
-class _RutasWidgetState extends State<RutasWidget> {
-  late RutasModel _model;
+class _SearchRutesWidgetState extends State<SearchRutesWidget> {
+  late SearchRutesModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => RutasModel());
+    _model = createModel(context, () => SearchRutesModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() {
-        _model.rolUser = valueOrDefault(currentUserDocument?.roles, '');
+        _model.searchActive = false;
       });
     });
 
@@ -51,31 +57,86 @@ class _RutasWidgetState extends State<RutasWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        automaticallyImplyLeading: false,
-        title: Text(
-          FFLocalizations.of(context).getText(
-            'ebnzopla' /* Rutas */,
+    return GestureDetector(
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              barrierColor: Color(0x230E151B),
+              context: context,
+              builder: (context) {
+                return GestureDetector(
+                  onTap: () => _model.unfocusNode.canRequestFocus
+                      ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                      : FocusScope.of(context).unfocus(),
+                  child: Padding(
+                    padding: MediaQuery.viewInsetsOf(context),
+                    child: Container(
+                      height: double.infinity,
+                      child: CreateTaskNewWidget(),
+                    ),
+                  ),
+                );
+              },
+            ).then((value) => safeSetState(() {}));
+          },
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          elevation: 8.0,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () async {
+              context.pushNamed('Register');
+            },
+            child: Icon(
+              Icons.add_rounded,
+              color: FlutterFlowTheme.of(context).primaryBackground,
+              size: 32.0,
+            ),
           ),
-          textAlign: TextAlign.start,
-          style: FlutterFlowTheme.of(context).headlineMedium.override(
-                fontFamily: 'Baloo Da 2',
-                color: Colors.white,
-                fontSize: 22.0,
-              ),
         ),
-        actions: [],
-        centerTitle: false,
-        elevation: 2.0,
-      ),
-      body: SafeArea(
-        top: true,
-        child: Visibility(
-          visible: _model.rolUser == 'Administrador',
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          leading: FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30.0,
+            borderWidth: 1.0,
+            buttonSize: 60.0,
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              context.pop();
+            },
+          ),
+          title: Text(
+            FFLocalizations.of(context).getText(
+              'in0kjvkr' /* Buscar rutas */,
+            ),
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Baloo Da 2',
+                  color: Colors.white,
+                  fontSize: 22.0,
+                ),
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 2.0,
+        ),
+        body: SafeArea(
+          top: true,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -139,7 +200,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                         decoration: InputDecoration(
                                           labelText: FFLocalizations.of(context)
                                               .getText(
-                                            'r12b4azv' /* Buscar... */,
+                                            'li5upjlv' /* Buscar... */,
                                           ),
                                           labelStyle:
                                               FlutterFlowTheme.of(context)
@@ -198,7 +259,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                     ),
                                   ),
                                 ),
-                                if (_model.searchState)
+                                if (_model.searchActive)
                                   InkWell(
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
@@ -206,7 +267,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
                                       setState(() {
-                                        _model.searchState = false;
+                                        _model.searchActive = false;
                                       });
                                       setState(() {
                                         _model.textController?.clear();
@@ -224,7 +285,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                       16.0, 16.0, 16.0, 16.0),
                                   child: FFButtonWidget(
                                     onPressed: () async {
-                                      await queryUsersRecordOnce()
+                                      await queryRideRecordOnce()
                                           .then(
                                             (records) =>
                                                 _model.simpleSearchResults =
@@ -232,9 +293,8 @@ class _RutasWidgetState extends State<RutasWidget> {
                                               records
                                                   .map(
                                                     (record) => TextSearchItem
-                                                        .fromTerms(record, [
-                                                      record.displayName!
-                                                    ]),
+                                                        .fromTerms(record,
+                                                            [record.userName!]),
                                                   )
                                                   .toList(),
                                             )
@@ -249,7 +309,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                           .whenComplete(() => setState(() {}));
 
                                       setState(() {
-                                        _model.searchState = true;
+                                        _model.searchActive = true;
                                       });
                                     },
                                     text: '',
@@ -304,13 +364,14 @@ class _RutasWidgetState extends State<RutasWidget> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  if (!_model.searchState)
-                                    StreamBuilder<List<UsersRecord>>(
-                                      stream: queryUsersRecord(
-                                        queryBuilder: (usersRecord) =>
-                                            usersRecord.where(
-                                          'roles',
-                                          isEqualTo: 'Conductor',
+                                  if (!_model.searchActive)
+                                    StreamBuilder<List<RideRecord>>(
+                                      stream: queryRideRecord(
+                                        queryBuilder: (rideRecord) =>
+                                            rideRecord.where(
+                                          'drive_uid',
+                                          isEqualTo:
+                                              widget.referenciaConductor?.id,
                                         ),
                                       ),
                                       builder: (context, snapshot) {
@@ -331,224 +392,237 @@ class _RutasWidgetState extends State<RutasWidget> {
                                             ),
                                           );
                                         }
-                                        List<UsersRecord>
-                                            listViewUsersRecordList =
+                                        List<RideRecord>
+                                            listViewRideRecordList =
                                             snapshot.data!;
                                         return ListView.builder(
                                           padding: EdgeInsets.zero,
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
                                           itemCount:
-                                              listViewUsersRecordList.length,
+                                              listViewRideRecordList.length,
                                           itemBuilder:
                                               (context, listViewIndex) {
-                                            final listViewUsersRecord =
-                                                listViewUsersRecordList[
+                                            final listViewRideRecord =
+                                                listViewRideRecordList[
                                                     listViewIndex];
                                             return Padding(
                                               padding: EdgeInsets.all(8.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  context.pushNamed(
-                                                    'EditUsers',
-                                                    queryParameters: {
-                                                      'editParameter':
-                                                          serializeParam(
-                                                        '',
-                                                        ParamType.String,
+                                              child: Container(
+                                                width: 100.0,
+                                                height: 100.0,
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground,
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              0.0, 0.0),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      24.0),
+                                                          child: Image.network(
+                                                            'https://picsum.photos/seed/767/600',
+                                                            width: 112.0,
+                                                            height: 200.0,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      'referenceUser':
-                                                          serializeParam(
-                                                        listViewUsersRecord
-                                                            .reference,
-                                                        ParamType
-                                                            .DocumentReference,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  width: 100.0,
-                                                  height: 100.0,
-                                                  decoration: BoxDecoration(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground,
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                0.0, 0.0),
-                                                        child: Padding(
+                                                    ),
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          listViewRideRecord
+                                                              .userName,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Montserrat',
+                                                                fontSize: 12.0,
+                                                              ),
+                                                        ),
+                                                        Padding(
                                                           padding:
                                                               EdgeInsets.all(
                                                                   8.0),
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        24.0),
-                                                            child:
-                                                                Image.network(
-                                                              listViewUsersRecord
-                                                                  .photoUrl,
-                                                              width: 112.0,
-                                                              height: 200.0,
-                                                              fit: BoxFit.cover,
-                                                            ),
+                                                          child: Text(
+                                                            listViewRideRecord
+                                                                .userAddress,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Montserrat',
+                                                                  fontSize:
+                                                                      12.0,
+                                                                ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            listViewUsersRecord
-                                                                .displayName,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Montserrat',
-                                                                  fontSize:
-                                                                      12.0,
-                                                                ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                              listViewUsersRecord
-                                                                  .roles,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Montserrat',
-                                                                    fontSize:
-                                                                        12.0,
+                                                        Text(
+                                                          listViewRideRecord
+                                                              .driverName,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Montserrat',
+                                                                fontSize: 12.0,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              1.0, 0.0),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      1.0, 0.0),
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            2.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryBackground,
                                                                   ),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            listViewUsersRecord
-                                                                .phoneNumber,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Montserrat',
-                                                                  fontSize:
-                                                                      12.0,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          scrollDirection:
-                                                              Axis.horizontal,
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Align(
-                                                                alignment:
-                                                                    AlignmentDirectional(
-                                                                        1.0,
-                                                                        0.0),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .all(
-                                                                              2.0),
                                                                   child:
-                                                                      Container(
-                                                                    width: 50.0,
-                                                                    height:
-                                                                        50.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
+                                                                      FlutterFlowIconButton(
+                                                                    borderColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                    borderRadius:
+                                                                        20.0,
+                                                                    borderWidth:
+                                                                        1.0,
+                                                                    buttonSize:
+                                                                        40.0,
+                                                                    fillColor: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .edit_note_rounded,
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .secondaryBackground,
+                                                                          .primaryText,
+                                                                      size:
+                                                                          24.0,
                                                                     ),
-                                                                    child:
-                                                                        FlutterFlowIconButton(
-                                                                      borderColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primary,
-                                                                      borderRadius:
-                                                                          20.0,
-                                                                      borderWidth:
-                                                                          1.0,
-                                                                      buttonSize:
-                                                                          40.0,
-                                                                      fillColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .secondary,
-                                                                      icon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .edit_note_rounded,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                        size:
-                                                                            24.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        context
-                                                                            .pushNamed(
-                                                                          'SearchRutes',
-                                                                          queryParameters:
-                                                                              {
-                                                                            'referenciaConductor':
-                                                                                serializeParam(
-                                                                              listViewUsersRecord.reference,
-                                                                              ParamType.DocumentReference,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                        );
-                                                                      },
-                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      print(
+                                                                          'IconButtonUpdate pressed ...');
+                                                                    },
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      1.0, 0.0),
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            2.0),
+                                                                child:
+                                                                    Container(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryBackground,
+                                                                  ),
+                                                                  child:
+                                                                      FlutterFlowIconButton(
+                                                                    borderColor:
+                                                                        FlutterFlowTheme.of(context)
+                                                                            .primary,
+                                                                    borderRadius:
+                                                                        20.0,
+                                                                    borderWidth:
+                                                                        1.0,
+                                                                    buttonSize:
+                                                                        40.0,
+                                                                    fillColor: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent1,
+                                                                    icon: Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryText,
+                                                                      size:
+                                                                          24.0,
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      await listViewRideRecord
+                                                                          .reference
+                                                                          .delete();
+                                                                      setState(
+                                                                          () {
+                                                                        _model.searchActive =
+                                                                            false;
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             );
@@ -556,7 +630,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                         );
                                       },
                                     ),
-                                  if (_model.searchState)
+                                  if (_model.searchActive)
                                     Builder(
                                       builder: (context) {
                                         final searchResult =
@@ -600,8 +674,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                                                   .circular(
                                                                       24.0),
                                                           child: Image.network(
-                                                            searchResultItem
-                                                                .photoUrl,
+                                                            'https://picsum.photos/seed/767/600',
                                                             width: 112.0,
                                                             height: 200.0,
                                                             fit: BoxFit.cover,
@@ -618,7 +691,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                                       children: [
                                                         Text(
                                                           searchResultItem
-                                                              .displayName,
+                                                              .userName,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyMedium
@@ -634,7 +707,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                                                   8.0),
                                                           child: Text(
                                                             searchResultItem
-                                                                .roles,
+                                                                .userAddress,
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .bodyMedium
@@ -648,7 +721,7 @@ class _RutasWidgetState extends State<RutasWidget> {
                                                         ),
                                                         Text(
                                                           searchResultItem
-                                                              .phoneNumber,
+                                                              .driverName,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyMedium
@@ -712,27 +785,59 @@ class _RutasWidgetState extends State<RutasWidget> {
                                                                     size: 24.0,
                                                                   ),
                                                                   onPressed:
+                                                                      () {
+                                                                    print(
+                                                                        'IconButtonUpdate pressed ...');
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(2.0),
+                                                              child: Container(
+                                                                width: 50.0,
+                                                                height: 50.0,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryBackground,
+                                                                ),
+                                                                child:
+                                                                    FlutterFlowIconButton(
+                                                                  borderColor:
+                                                                      FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primary,
+                                                                  borderRadius:
+                                                                      20.0,
+                                                                  borderWidth:
+                                                                      1.0,
+                                                                  buttonSize:
+                                                                      40.0,
+                                                                  fillColor: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .accent1,
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .delete,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                    size: 24.0,
+                                                                  ),
+                                                                  onPressed:
                                                                       () async {
-                                                                    context
-                                                                        .pushNamed(
-                                                                      'EditUsers',
-                                                                      queryParameters:
-                                                                          {
-                                                                        'referenceUser':
-                                                                            serializeParam(
-                                                                          searchResultItem
-                                                                              .reference,
-                                                                          ParamType
-                                                                              .DocumentReference,
-                                                                        ),
-                                                                        'editParameter':
-                                                                            serializeParam(
-                                                                          '',
-                                                                          ParamType
-                                                                              .String,
-                                                                        ),
-                                                                      }.withoutNulls,
-                                                                    );
+                                                                    await searchResultItem
+                                                                        .reference
+                                                                        .delete();
+                                                                    setState(
+                                                                        () {
+                                                                      _model.searchActive =
+                                                                          false;
+                                                                    });
                                                                   },
                                                                 ),
                                                               ),

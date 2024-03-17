@@ -20,3 +20,5 @@ export '/pages/elegir_direccion/elegir_direccion_widget.dart'
 export '/pages/edit_user_customer/edit_user_customer_widget.dart'
     show EditUserCustomerWidget;
 export '/pages/edit_pets/edit_pets_widget.dart' show EditPetsWidget;
+export '/pages/edit_rutes/edit_rutes_widget.dart' show EditRutesWidget;
+export '/pages/search_rutes/search_rutes_widget.dart' show SearchRutesWidget;

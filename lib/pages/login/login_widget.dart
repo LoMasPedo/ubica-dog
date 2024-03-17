@@ -119,10 +119,12 @@ class _LoginWidgetState extends State<LoginWidget>
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.asset(
-                                'assets/images/Logo.png',
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? 'assets/images/LogoAmarillo.png'
+                                    : 'assets/images/LogoAzul.png',
                                 width: 300.0,
-                                height: 250.0,
-                                fit: BoxFit.cover,
+                                height: 306.0,
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ),
@@ -677,8 +679,9 @@ class _LoginWidgetState extends State<LoginWidget>
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         image: DecorationImage(
                           fit: BoxFit.cover,
+                          alignment: AlignmentDirectional(0.5, 0.0),
                           image: CachedNetworkImageProvider(
-                            'https://images.unsplash.com/photo-1599692392256-2d084495fe15?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                            'https://th.bing.com/th/id/OIG2.ZZX4BuNgJ46S.9bVZxQC?pid=ImgGn',
                           ),
                         ),
                         borderRadius: BorderRadius.circular(16.0),

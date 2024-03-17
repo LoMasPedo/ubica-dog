@@ -122,6 +122,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'es': 'Rutas',
       'en': '',
     },
+    'r12b4azv': {
+      'es': 'Buscar...',
+      'en': '',
+    },
   },
   // Home
   {
@@ -609,6 +613,28 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
     'yjun9abr': {
+      'es': 'Home',
+      'en': '',
+    },
+  },
+  // EditRutes
+  {
+    '9l0warq2': {
+      'es': 'Home',
+      'en': '',
+    },
+  },
+  // SearchRutes
+  {
+    'li5upjlv': {
+      'es': 'Buscar...',
+      'en': '',
+    },
+    'in0kjvkr': {
+      'es': 'Buscar rutas',
+      'en': '',
+    },
+    '5zy2wc11': {
       'es': 'Home',
       'en': '',
     },
